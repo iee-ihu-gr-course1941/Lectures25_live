@@ -1,4 +1,4 @@
 <?php
-  $DB_PASS='';
-	$DB_USER='konsmall';
+  $DB_PASS='adise25';
+	$DB_USER='root';
 ?>
