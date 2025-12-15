@@ -11,18 +11,25 @@ $request = explode('/', trim($_SERVER['PATH_INFO'],'/'));
 // Σε περίπτωση που τρέχουμε php –S 
 $input = json_decode(file_get_contents('php://input'),true);
 
+//Lecture 4
+if($input==null) {
+    $input=[];
+}
+if (isset($_SERVER['HTTP_APP_TOKEN'])) {
+    $input['token']=$_SERVER['HTTP_APP_TOKEN'];
+} elseif (!isset($input['token'])) {
+    $input['token']='';
+}
+
 switch ($r=array_shift($request)) {
 	case 'board' : 
 		switch ($b=array_shift($request)) {
 	  		case '':
 	  		case null: 
-				handle_board($method);
+				handle_board($method, $input);
 				break;
 			case 'piece': 
 				handle_piece($method, $request[0], $request[1], $input);
-				break;
-			case 'player': 
-				handle_player($method, $request[0], $input);
 				break;
 			default: 
 				header("HTTP/1.1 404 Not Found");
@@ -35,6 +42,7 @@ switch ($r=array_shift($request)) {
 			handle_status($method);
 		} else {
 			header("HTTP/1.1 404 Not Found");
+   			print "<h1>Page not found (404)</h1>";
 		}
 		break;
 	case 'player': 
@@ -46,19 +54,27 @@ switch ($r=array_shift($request)) {
 	  exit;
 }
 
-function handle_board($method) {
+
+//lecture 4 - add $input
+function handle_board($method, $input) {
 	if($method=='GET') {
-    	show_board();
+    	show_board($input);
   	} else if ($method=='POST') {
-    	reset_board();
+    	reset_board($input);
   	} else {
     	header('HTTP/1.1 405 Method Not Allowed');
   		print "<h1>Method Not Allowed (405)</h1>";
   	}
 }
 
-function handle_piece() {
-
+//Lecture 1
+//lecture 4 - add $input,$input['token']
+function handle_piece($method, $x, $y, $input) {
+    if($method=='GET') {
+        show_piece($x,$y);
+    } else if ($method=='PUT') {
+        move_piece($x,$y,$input['x'], $input['y'], $input['token']);
+    }    
 }
 
 //Lecture chess 3
