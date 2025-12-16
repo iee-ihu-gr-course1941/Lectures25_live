@@ -36,7 +36,8 @@ function show_piece($x,$y) {
 //Lecture 4 2nd stage 
 //Lecture 4 3rd stage 
 function move_piece($x,$y,$x2,$y2,$token) {
-	do_move($x,$y,$x2,$y2);
+	//Lecture 4 1st stage only do_move($x,$y,$x2,$y2);
+	//do_move($x,$y,$x2,$y2);
 
 	//Εάν δεν δόθηκε token, raise error
 	if($token==null || $token=='') {
